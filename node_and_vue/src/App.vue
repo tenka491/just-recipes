@@ -1,30 +1,44 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import { ref } from "vue";
+import { getRawRecipeHtml, urlValidator } from "./utils";
+const inputValue = ref("https://www.tasteofhome.com/recipes/soy-sauce-chicken/")
+const onChangeConsole = (e) => {
+  e.preventDefault();
+  console.log({e})
+  console.log(inputValue)
+  console.log(inputValue.value)
+}
+
+const onSubmit = (e) => {
+  console.log({e})
+  if(urlValidator(inputValue.value)) {
+    getRawRecipeHtml(inputValue.value)
+  }
+}
 </script>
 
 <template>
   <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+      <label>
+        URL
+        <input type="url" v-model="inputValue" @change="(e)=> onChangeConsole(e)" />
+      </label>
+      <br />
+      <button @click="(e) => onSubmit(e)">Get me the Recipe</button>
+      <br /><br />
+      <code>
+        InputValue: {{ inputValue }}
+      </code>
+
+
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+input {
+  width: 230px;
+  height: 35px;
+  font-size: large;
+  border-radius: 5px;
 }
 </style>
